@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin-top: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #4a5568;
+      margin-bottom: 30px;
+      font-weight: 300;
+    }
+    .note-form {
+      background: #f7fafc;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px solid #e2e8f0;
+    }
+    .note-form h2 {
+      margin-top: 0;
+      color: #2d3748;
+      font-size: 1.2em;
+    }
+    input, textarea {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    button {
+      padding: 12px 24px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #5a67d8;
+    }
+    .delete-btn {
+      background: #e53e3e;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    .delete-btn:hover {
+      background: #c53030;
+    }
+    .notes-list {
+      display: grid;
+      gap: 20px;
+    }
+    .note {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: box-shadow 0.3s ease;
+    }
+    .note:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .note h3 {
+      margin-top: 0;
+      color: #2d3748;
+      font-size: 1.3em;
+    }
+    .note p {
+      color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .note small {
+      color: #718096;
+      font-size: 0.9em;
+    }
+    .note-actions {
+      margin-top: 15px;
+      text-align: right;
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      .note {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 My Notes</h1>
+
+    <div class="note-form">
+      <h2>Add New Note</h2>
+      <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="Enter note title..." required>
+        <textarea name="content" placeholder="Write your note here..." rows="4" required></textarea>
+        <button type="submit">Add Note</button>
+      </form>
+    </div>
+
+    <div class="notes-list">
+      <% notes.forEach(note => { %>
+        <div class="note">
+          <h3><%= note.title %></h3>
+          <p><%= note.content %></p>
+          <small>Created: <%= note.createdAt.toLocaleString() %></small>
+          <div class="note-actions">
+            <form action="/delete/<%= note._id %>" method="POST" style="display: inline;">
+              <button type="submit" class="delete-btn">Delete</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+      <% if (notes.length === 0) { %>
+        <div class="note" style="text-align: center; color: #a0aec0;">
+          <p>No notes yet. Add your first note above!</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>
